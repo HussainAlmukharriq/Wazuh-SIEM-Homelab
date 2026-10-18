@@ -40,9 +40,11 @@ The screenshots do **not** establish the source IP address, exact number of fail
 
 **Observed:** A Windows Security failed-logon event involving the Administrator account, with a bad-password substatus, and a Wazuh failed-logon alert visible on DC01.
 
-**Not yet established:** Repeated attempts, a brute-force pattern, attacker identity, malicious intent, or a compromised account.
+**Confirmed test context:** The lab operator intentionally entered an incorrect Administrator password to generate failed-logon telemetry. This was an authorized simulation, not an unexpected attack.
 
-**Preliminary classification:** Failed authentication event requiring contextual review; **not a confirmed attack**.
+**Not yet established:** The exact number of attempts, a brute-force pattern, or any account compromise.
+
+**Final classification:** **Authorized failed-login simulation (true-positive detection of deliberately generated failed authentication).** Wazuh displayed the relevant failed-logon alert, and Windows recorded Event ID 4625 with incorrect-password substatus. This is not evidence of an actual hostile intrusion.
 
 ## Recommended Next Checks
 
@@ -50,8 +52,12 @@ The screenshots do **not** establish the source IP address, exact number of fail
 - [ ] Review timestamps to determine whether failures are clustered.
 - [ ] Inspect source network address and logon type if present in the full event.
 - [ ] Compare with nearby successful logons (Event ID 4624).
-- [ ] Determine whether the activity was generated intentionally as part of the lab exercise.
+- [x] Confirm with the lab operator that incorrect Administrator passwords were deliberately entered to generate alerts.
 - [ ] Record a final disposition after reviewing those fields.
+
+## Outcome
+
+The exercise demonstrated that intentionally generated Windows failed-login activity was visible in Wazuh. It does not establish brute-force detection or incident response to a real attacker. Further analysis of event counts and source fields would make the simulation more complete.
 
 ## Lessons Learned
 
