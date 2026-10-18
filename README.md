@@ -1,35 +1,49 @@
 # Wazuh SIEM Homelab
 
-A hands-on cybersecurity homelab project focused on learning security monitoring, threat detection, log analysis, and incident response using Wazuh.
+A hands-on cybersecurity homelab for security monitoring, log analysis, threat detection, and incident response using Wazuh.
 
 ## Project Goal
 
-Build a practical security monitoring environment and document the process of learning skills used by SOC analysts. This repository will include setup notes, experiments, investigation results, troubleshooting, and lessons learned.
+Build practical SOC analyst skills by deploying Wazuh, connecting endpoints, reviewing security events, investigating alerts, and documenting troubleshooting and lessons learned.
 
-## Existing Homelab Environment
+## Lab Environment
 
-My lab uses Proxmox virtualization and includes:
+- **Hypervisor:** Proxmox
+- **Wazuh VM:** VM 103, Ubuntu Server 24.04.5 LTS
+- **Resources:** 4 vCPU, 8 GB RAM, 60 GB disk
+- **Wazuh:** 4.14.8, Manager + Indexer + Dashboard
+- **Dashboard network IP:** 10.0.0.232
+- **Lab network IP:** 10.10.10.102
+- **Lab network:** Isolated from the home network for testing
 
-- Windows Server 2022 domain controller (Active Directory and DNS)
-- Windows 11 domain-joined workstation
-- Kali Linux virtual machine
-- A separate lab network for testing
+## Connected Agents
 
-Wazuh integration and any additional systems will be documented as they are configured.
+| Agent | System | Lab IP | Status |
+| --- | --- | --- | --- |
+| 001 / DC01 | Windows Server | 10.10.10.10 | Active |
+| 002 / WIN11 | Windows 11 Pro | 10.10.10.100 | Active |
+| 003 / KALI | Kali Linux | 10.10.10.101 | Active |
 
-## Planned Work
+## Completed Work
 
-- [ ] Install and configure Wazuh
-- [ ] Connect Windows and Linux endpoints for log collection
-- [ ] Explore alerts and security events
-- [ ] Simulate authorized security events inside the isolated lab
-- [ ] Investigate alerts and document findings
-- [ ] Create SOC-style incident reports
+- [x] Deploy Ubuntu Server VM in Proxmox
+- [x] Install Wazuh Manager, Indexer, and Dashboard
+- [x] Connect DC01, WIN11, and KALI agents
+- [x] Verify DC01 event collection
+- [x] Investigate Windows Event ID 4625 (failed logon)
+- [x] Troubleshoot Windows 11 agent installation
+
+## Next Steps
+
+- [ ] Write detailed setup notes and add sanitized screenshots
+- [ ] Document the Windows 11 agent troubleshooting steps
+- [ ] Expand controlled security-event simulations
+- [ ] Produce SOC-style investigation reports
 
 ## Documentation Approach
 
-This is a learning project, not a polished production deployment. I will keep track of mistakes, failed attempts, troubleshooting steps, and fixes alongside successful results. Completed work will be documented as it happens.
+This repository records actual work, including mistakes, failed attempts, troubleshooting, corrections, and lessons learned. No uncompleted tasks are presented as finished.
 
 ## Safety
 
-All security testing will be limited to systems I own or am authorized to test. Screenshots and logs will be reviewed to avoid publishing passwords, tokens, or other sensitive information.
+Security testing is limited to owned or authorized lab systems. Logs and screenshots should be reviewed before publication to avoid leaking passwords, tokens, and other sensitive information.
