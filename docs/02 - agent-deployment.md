@@ -2,41 +2,78 @@
 
 ## Goal
 
-Connect the lab endpoints to the Wazuh manager so I can collect security events and practice monitoring and investigations.
+Connect three endpoints to Wazuh 4.14.8 and verify that they are actively reporting to the manager.
 
-## Lab Endpoints
+## Environment
 
-| Endpoint | Operating system | Purpose | Status |
+| Agent ID | Host | Operating system reported by Wazuh | Status |
 | --- | --- | --- | --- |
-| DC01 | Windows Server 2022 | Domain controller and Windows security events | Connected |
-| WIN11 | Windows 11 Pro | Domain-joined workstation | Connected |
-| KALI | Kali Linux | Linux endpoint and security testing | Connected |
+| 001 | DC01 | Windows Server 2025 Standard Evaluation | Active |
+| 002 | WIN11 | Windows 11 Pro | Active |
+| 003 | Kali | Kali GNU/Linux 2026.2 | Active |
 
-The agents communicate with the Wazuh server over the lab network. Actual internal IP addresses are omitted from this public documentation.
+All three endpoints appeared under the default group on node01. Real internal IP addresses are omitted from this public document.
 
-## Completed Work
+## DC01: First Connected Agent
 
-- [x] Connected the Windows Server domain controller to Wazuh.
-- [x] Connected the Windows 11 workstation to Wazuh.
-- [x] Connected the Kali Linux endpoint to Wazuh.
-- [x] Verified that all three agents showed as active.
-- [x] Reviewed Windows security events from DC01.
+The first dashboard verification showed DC01 as the only active agent. Later, DC01 and WIN11 both appeared as active.
 
-## Verification and First Investigation
+## WIN11: Installation and Troubleshooting
 
-Windows Event ID **4625** represents a failed account logon. I reviewed these events as an initial exercise in security monitoring. A future incident report will document the investigation evidence, findings, and interpretation in detail.
+The Windows 11 installation did not succeed on the first attempt. The following is preserved as an actual troubleshooting record.
 
-## Windows 11 Agent Troubleshooting
+1. Downloaded the Wazuh 4.14.8 Windows installer using PowerShell and attempted a silent installation with `msiexec.exe`.
+2. Checked the service using `Get-Service -Name WazuhSvc`. PowerShell reported that no matching service was found, so the agent was not yet installed as a working Windows service.
+3. Inspected the downloaded file in the temporary directory using `Get-Item`.
+4. Checked Windows Installer event logs. Event ID 1033 recorded Wazuh Agent 4.14.8 with installation status **1602** (installation canceled). The event does not identify the underlying reason for cancellation.
+5. Retried installation using `msiexec.exe` with logging enabled. A screenshot shows `$LASTEXITCODE` being checked, but does not show its resulting value.
+6. Started the service with `Start-Service -Name WazuhSvc` and confirmed with `Get-Service -Name WazuhSvc` that it was **Running**.
+7. Confirmed that WIN11 appeared alongside DC01 in the Wazuh dashboard, both marked active.
 
-The Windows 11 agent installation required troubleshooting before the endpoint was successfully connected. The exact error messages, commands attempted, and corrections still need to be recovered from the lab notes or screenshots. I will add them rather than invent a clean installation sequence.
+### Commands used for diagnosis
+
+```powershell
+Get-Service -Name WazuhSvc
+Get-Item "$env:TEMP\wazuh-agent"
+Test-Path "$env:TEMP\wazuh-agent"
+Start-Service -Name WazuhSvc
+```
+
+- `Get-Service` queries a Windows service; `-Name` selects the service's internal name.
+- `Get-Item` inspects the downloaded file or folder.
+- `$env:TEMP` refers to the current user's temporary directory.
+- `Test-Path` checks whether a path exists.
+- `Start-Service` attempts to start the specified service.
+
+The screenshots also contain a `Test-Path` command left at the PowerShell continuation prompt; it should not be presented as a successful check.
+
+## Kali Linux: Agent Installation
+
+The Kali screenshots show a Wazuh agent 4.14.8 Debian package being downloaded using `wget` and installed using `dpkg -i` with `WAZUH_MANAGER` and `WAZUH_AGENT_NAME` environment variables.
+
+- `wget` downloads the package from the Wazuh package server.
+- `sudo` runs the installation with elevated privileges.
+- `dpkg -i` installs the downloaded Debian package.
+- `WAZUH_MANAGER` supplies the manager address.
+- `WAZUH_AGENT_NAME` sets the endpoint's registered name.
+
+After installation, the command `sudo systemctl status wazuh-agent` showed the service **active (running)** and enabled. `systemctl status` displays the current systemd service state.
+
+## Final Verification
+
+The Wazuh dashboard showed **three active agents**, zero disconnected, zero pending, and zero never connected. It identified two Windows endpoints and one Kali Linux endpoint, all on Wazuh 4.14.8.
 
 ## Evidence to Add
 
-- [ ] Wazuh dashboard showing three active agents
-- [ ] Agent details for DC01, WIN11, and KALI
-- [ ] Sanitized Windows 11 troubleshooting screenshots or logs
-- [ ] Example DC01 Windows Event ID 4625 alert
+- [ ] Initial DC01-only dashboard screenshot
+- [ ] Windows 11 installer errors and MSI event
+- [ ] Windows 11 running service confirmation
+- [ ] Two-active-agent dashboard screenshot
+- [ ] Kali package installation and running service
+- [ ] Final three-active-agent dashboard screenshot
+
+Screenshots will be added after filenames are established and any sensitive details are reviewed. Their original errors and intermediate states will be retained.
 
 ## Lessons Learned
 
-Connecting endpoints is only the first step. Confirming agent status and reviewing actual collected events are necessary to establish that monitoring is working. This page will be expanded as I recover the original deployment steps and troubleshooting history.
+A downloaded installer is not proof that an agent is installed. Service checks, installer logs, and confirmation in the Wazuh dashboard helped distinguish installation failures from successful endpoint enrollment.
