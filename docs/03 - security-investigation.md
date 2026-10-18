@@ -2,42 +2,57 @@
 
 ## Objective
 
-Practice an entry-level SOC investigation by reviewing Windows failed-logon activity collected through Wazuh.
+Investigate a Windows failed-logon event collected from DC01 in Wazuh 4.14.8 and document only conclusions supported by the available evidence.
 
-## Lab Context
+## Evidence
 
-- **SIEM:** Wazuh 4.14.8
-- **Monitored endpoints:** DC01, WIN11, and Kali
-- **Relevant Windows event:** Security Event ID 4625 (failed account logon)
-- **Environment:** Isolated cybersecurity homelab
+### Wazuh alert overview
 
-## What Event ID 4625 Means
+![Wazuh alerts on DC01, including failed logon](../screenshots/Screenshot%202026-10-17%20121856.png)
 
-Windows records Event ID 4625 when an account logon fails. A failed logon is not, by itself, proof of an attack. The surrounding context—such as the account, source, logon type, failure reason, and frequency—helps determine whether it warrants investigation.
+The Wazuh alert search returned **372 hits** during a one-hour window on October 17, 2026 (11:18:01.904–12:18:01.904). The visible results include successful logons, logoffs, privilege assignments, and a **Logon Failure - Unknown user or bad password** alert. **372 hits is the total number of matching events, not a count of failed logons.**
 
-## Evidence Captured
+The visible failed-logon alert is associated with **DC01**, Wazuh **rule ID 60122**, and **rule level 5**.
 
-The following screenshots were uploaded during the investigation. Their precise contents and conclusions still need to be reviewed before assigning more specific captions.
+### Windows event details
 
-![Investigation evidence screenshot 1](../screenshots/Screenshot%202026-10-17%20121856.png)
+![Windows Security Event 4625 fields](../screenshots/Screenshot%202026-10-17%20132318.png)
 
-![Investigation evidence screenshot 2](../screenshots/Screenshot%202026-10-17%20132318.png)
+| Field | Observed value |
+| --- | --- |
+| Computer | DC01.bunbun.local |
+| Windows channel | Security |
+| Windows Event ID | 4625 |
+| Target username | Administrator |
+| Target domain | BUNBUN |
+| Workstation name | DC01 |
+| Status | `0xC000006D` |
+| Substatus | `0xC000006A` |
+| Event record ID | 1872974 |
+| Subject username | DC01$ |
+| Subject SID | S-1-5-18 |
 
-## Investigation Checklist
+**Interpretation:** Windows status `0xC000006D` indicates a failed logon; substatus `0xC000006A` indicates an incorrect password. The event therefore records an unsuccessful authentication attempt targeting the Administrator account.
 
-- [ ] Identify the affected host and account
-- [ ] Record the event timestamp and logon type
-- [ ] Identify the source network address, if recorded
-- [ ] Review failure status and substatus codes
-- [ ] Check whether failures repeat or cluster in time
-- [ ] Compare with related successful logons, if available
-- [ ] Decide whether the evidence suggests a user error, configuration problem, or suspicious activity
-- [ ] Record findings and any recommended next steps
+The screenshots do **not** establish the source IP address, exact number of failed attempts, logon type, or whether the activity was intentional. The Wazuh alert listing and event detail screenshots are treated as related investigation evidence, but their exact record-level correspondence has not been independently verified.
 
-## Findings
+## Triage Assessment
 
-**Pending evidence review.** No source IP, account, event count, attacker attribution, or root cause is claimed without supporting event data.
+**Observed:** A Windows Security failed-logon event involving the Administrator account, with a bad-password substatus, and a Wazuh failed-logon alert visible on DC01.
+
+**Not yet established:** Repeated attempts, a brute-force pattern, attacker identity, malicious intent, or a compromised account.
+
+**Preliminary classification:** Failed authentication event requiring contextual review; **not a confirmed attack**.
+
+## Recommended Next Checks
+
+- [ ] Filter Wazuh results specifically for Windows Event ID 4625 and count matching events.
+- [ ] Review timestamps to determine whether failures are clustered.
+- [ ] Inspect source network address and logon type if present in the full event.
+- [ ] Compare with nearby successful logons (Event ID 4624).
+- [ ] Determine whether the activity was generated intentionally as part of the lab exercise.
+- [ ] Record a final disposition after reviewing those fields.
 
 ## Lessons Learned
 
-A SOC investigation should distinguish an observed alert from a confirmed security incident. Screenshots, event fields, and a documented reasoning process make the investigation reproducible and defensible.
+A large number of search hits does not mean the same number of security incidents. A SOC analyst should separate the detection, the underlying Windows event, and any inference about malicious behavior. This case demonstrates how status and substatus codes help explain a failed authentication without overstating what the evidence proves.
