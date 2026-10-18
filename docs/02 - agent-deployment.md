@@ -63,16 +63,41 @@ After installation, the command `sudo systemctl status wazuh-agent` showed the s
 
 The Wazuh dashboard showed **three active agents**, zero disconnected, zero pending, and zero never connected. It identified two Windows endpoints and one Kali Linux endpoint, all on Wazuh 4.14.8.
 
-## Evidence to Add
+## Screenshots: Deployment and Troubleshooting
 
-- [ ] Initial DC01-only dashboard screenshot
-- [ ] Windows 11 installer errors and MSI event
-- [ ] Windows 11 running service confirmation
-- [ ] Two-active-agent dashboard screenshot
-- [ ] Kali package installation and running service
-- [ ] Final three-active-agent dashboard screenshot
+### DC01: Initial agent connection
 
-Screenshots will be added after filenames are established and any sensitive details are reviewed. Their original errors and intermediate states will be retained.
+![DC01 initial agent connection](../screenshots/Screenshot%202026-10-17%20104545.png)
+
+### WIN11: Installation errors and investigation
+
+The screenshots preserve the original service-not-found errors, installer checks, and Windows Installer event rather than hiding the failed attempts.
+
+![WIN11 installation attempt and missing service](../screenshots/Screenshot%202026-10-17%2013316.png)
+
+![WIN11 downloaded installer inspection](../screenshots/Screenshot%202026-10-17%20133514.png)
+
+![WIN11 service not found and path check](../screenshots/Screenshot%202026-10-17%20134415.png)
+
+![WIN11 Windows Installer event 1033](../screenshots/Screenshot%202026-10-17%20135954.png)
+
+![WIN11 retry with MSI logging](../screenshots/Screenshot%202026-10-17%20141845.png)
+
+### WIN11: Successful service and enrollment
+
+![WIN11 Wazuh service running](../screenshots/Screenshot%202026-10-17%20143355.png)
+
+![DC01 and WIN11 active in dashboard](../screenshots/Screenshot%202026-10-17%20143647.png)
+
+### Kali Linux: Installation and verification
+
+![Kali Wazuh package installation](../screenshots/Screenshot%202026-10-17%20181958.png)
+
+![Kali Wazuh agent systemd status](../screenshots/Screenshot%202026-10-17%20182323.png)
+
+### Final dashboard: All three agents active
+
+![Three active Wazuh agents](../screenshots/Screenshot%202026-10-17%20182420.png)
 
 ## Lessons Learned
 
