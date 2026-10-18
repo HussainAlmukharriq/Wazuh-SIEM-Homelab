@@ -12,17 +12,19 @@ Build practical SOC analyst skills by deploying Wazuh, connecting endpoints, rev
 - **Wazuh VM:** VM 103, Ubuntu Server 24.04.5 LTS
 - **Resources:** 4 vCPU, 8 GB RAM, 60 GB disk
 - **Wazuh:** 4.14.8, Manager + Indexer + Dashboard
-- **Dashboard network IP:** 10.0.0.232
-- **Lab network IP:** 10.10.10.102
+- **Dashboard network IP:** 192.0.2.10
+- **Lab network IP:** 192.0.2.11
 - **Lab network:** Isolated from the home network for testing
+
+_IP addresses below are illustrative documentation addresses, not the actual lab addresses._
 
 ## Connected Agents
 
 | Agent | System | Lab IP | Status |
 | --- | --- | --- | --- |
-| 001 / DC01 | Windows Server | 10.10.10.10 | Active |
-| 002 / WIN11 | Windows 11 Pro | 10.10.10.100 | Active |
-| 003 / KALI | Kali Linux | 10.10.10.101 | Active |
+| 001 / DC01 | Windows Server | 192.0.2.20 | Active |
+| 002 / WIN11 | Windows 11 Pro | 192.0.2.21 | Active |
+| 003 / KALI | Kali Linux | 192.0.2.22 | Active |
 
 ## Completed Work
 
