@@ -23,7 +23,22 @@ The VM is connected to the lab environment. Real internal IP addresses are inten
 
 **Completed:** Wazuh 4.14.8 was installed, and the Manager, Indexer, and Dashboard were configured.
 
-> Note: Exact installation commands and the sequence of installer prompts still need to be reconstructed from my notes or screenshots. I am not listing guessed commands as if I ran them.
+### Installation procedure (October 10, 2026)
+
+1. Created a Proxmox snapshot before installing Wazuh.
+2. Connected to the Ubuntu server through SSH from Windows PowerShell.
+3. Used the all-in-one Wazuh installation command recorded in our installation chat:
+
+```bash
+sudo bash wazuh-install.sh -a
+```
+
+- `sudo`: run with elevated privileges.
+- `bash`: execute the shell script.
+- `wazuh-install.sh`: Wazuh installation assistant.
+- `-a`: install all-in-one Wazuh components.
+
+The earlier command `head -30 wazuh-install.sh` was used to inspect the script, not to install Wazuh. The exact download command and full installation log are not yet documented.
 
 ## Verification
 
@@ -37,7 +52,7 @@ Initial Windows security log review included failed sign-in events (Windows Even
 
 ## Installation Screenshots
 
-Screenshots will be added after reviewing them for credentials, tokens, public addresses, and other sensitive information.
+Screenshots collected for review include the installer script header, installer help options, successful dashboard initialization log, first dashboard view (before agent enrollment), and curl version output. The dashboard initialization screenshot confirms the web application started. Screenshots will be added to the repository after reviewing them for sensitive information.
 
 ## Troubleshooting and Lessons Learned
 
