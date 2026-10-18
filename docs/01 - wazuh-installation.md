@@ -54,6 +54,21 @@ Initial Windows security log review included failed sign-in events (Windows Even
 
 Screenshots collected for review include the installer script header, installer help options, successful dashboard initialization log, first dashboard view (before agent enrollment), and curl version output. The dashboard initialization screenshot confirms the web application started. Screenshots will be added to the repository after reviewing them for sensitive information.
 
+
+### Uploaded installation evidence
+
+The following five screenshots were uploaded to the repository. Their individual captions will be finalized after matching each uploaded filename to its contents.
+
+![Installation screenshot 1](../screenshots/27498602-86da-4dd8-b98b-fdfff15c0c63.png)
+
+![Installation screenshot 2](../screenshots/5ca0f847-eecb-47ac-b091-bb2a1cb3a61b.png)
+
+![Installation screenshot 3](../screenshots/84021da6-207b-49a3-a042-2a3d7f4f467a.png)
+
+![Installation screenshot 4](../screenshots/94df7d2d-28a5-4ec0-9d68-f770a4ed0324.png)
+
+![Installation screenshot 5](../screenshots/cdee62e2-f929-41fe-be2d-eabe80b636c0.png)
+
 ## Troubleshooting and Lessons Learned
 
 This section will preserve actual errors, attempted fixes, and successful corrections from the installation. Detailed notes are pending review; I will not invent troubleshooting steps.
